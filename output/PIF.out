@@ -1,0 +1,46 @@
+Token | ST/CT position
+enter - None
+integer - None
+a - (8, 0)
+; - None
+a - (8, 0)
+<- - None
+11 - (11, 0)
+; - None
+boolean - None
+prime - (3, 0)
+; - None
+prime - (3, 0)
+<- - None
+true - (11, 1)
+; - None
+integer - None
+i - (2, 0)
+; - None
+i - (2, 0)
+<- - None
+2 - (0, 0)
+; - None
+while - None
+( - None
+i - (2, 0)
+<= - None
+a - (8, 0)
+/ - None
+2 - (0, 0)
+) - None
+{ - None
+if - None
+( - None
+a - (8, 0)
+% - None
+i - (2, 0)
+== - None
+0 - (12, 0)
+) - None
+{ - None
+prime - (3, 0)
+<- - None
+false - (4, 0)
+; - None
+} - None

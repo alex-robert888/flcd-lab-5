@@ -60,6 +60,12 @@ class Grammar(object):
     def is_cfg(self):
         return self.__is_cfg
 
+    def is_non_terminal(self, symbol):
+        return symbol in self.__non_terminals
+
+    def is_terminal(self, symbol):
+        return symbol in self.__terminals
+
     def __load(self):
         self.__f = open(self.__input_file)
         self.__non_terminals = self.__load_non_terminals()

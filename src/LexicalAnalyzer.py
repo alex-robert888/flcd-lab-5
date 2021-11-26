@@ -49,7 +49,7 @@ class LexicalAnalyzer:
         self.tokenIndex = 0
 
     def open_file(self, filename):
-        self.file = open("input/" + filename, "r")
+        self.file = open("resources/" + filename, "r")
         if self.file.closed:
             return False
 
@@ -101,7 +101,7 @@ class LexicalAnalyzer:
         return self.fileContent
 
     def read_tokens_input(self, filename):
-        token_file = open("input/" + filename, "r")
+        token_file = open("resources/" + filename, "r")
         if self.file.closed:
             return False
 

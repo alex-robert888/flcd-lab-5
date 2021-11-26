@@ -1,4 +1,4 @@
-program typename variable action action_list action_block declaration assignment if_action condition elif_component while_action function parameter_list assignment_operator arithmetic_operator logical_operator relational_operator expression logical_expression
+program typename action action_list action_block declaration assignment if_action condition elif_component while_action function parameter_list assignment_operator arithmetic_operator logical_operator relational_operator expression logical_expression
 ENTER EXIT BOOLEAN CHARACTER STRING INTEGER LIST IF ELSE ELIF WHILE variable constant = [ ] ( ) { } + - * / % == != <= >= < > AND OR , ;
 program
 program - ENTER action_list EXIT

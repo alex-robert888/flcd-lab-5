@@ -1,5 +1,7 @@
 import sys
 from grammar import Grammar
+from LexicalAnalyzer import LexicalAnalyzer
+from parser import Parser
 
 
 class ConsoleApplication(object):
@@ -11,9 +13,22 @@ class ConsoleApplication(object):
             "3. Print start symbol.",
             "4. Print productions.",
             "5. Print production for a non-terminal.",
-            "6. CFG check"
+            "6. CFG check",
+            "7. Parse program"
         ]
         self.__grammar = Grammar(input_file)
+
+        self.__lexical_analyzer = LexicalAnalyzer()
+        self.init_parser()
+
+        self.__parser = Parser(self.__grammar, self.__lexical_analyzer)
+
+    def init_parser(self):
+        self.__lexical_analyzer.open_file("p2.txt")
+        self.__lexical_analyzer.read_tokens_input("token.in")
+        self.__lexical_analyzer.close_file()
+        self.__lexical_analyzer.tokenize()
+        self.__lexical_analyzer.analyze()
 
     def run(self):
         while True:
@@ -37,6 +52,8 @@ class ConsoleApplication(object):
                     print(self.__grammar.get_productions_for_non_terminal(non_terminal))
                 elif option == 6:
                     print("Yes." if self.__grammar.is_cfg() else "No.")
+                elif option == 7:
+                    print(self.__parser.run())
 
             except Exception as e:
                 print(e)

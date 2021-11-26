@@ -1,0 +1,8 @@
+reserved_words: enter, exit, character, string, integer, boolean, list, dictionary, if, else, elif, while
+type_names: character, string, integer, boolean, list, dictionary
+functions: write
+separators: ";", "{", "}", "(", ")", "[", "]", ","
+arithmetic_operators: "+", "-", "*", "/", "%"
+logical_operators: "and", "or"
+relational_operators: "==", "!=", "<=", ">=", "<", ">"
+assignment_operators: "<-"
