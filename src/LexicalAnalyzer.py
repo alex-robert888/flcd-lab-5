@@ -222,7 +222,7 @@ class LexicalAnalyzer:
         else:
             ct_hash, list_position = position
 
-        self.programInternalForm.append(PIFPair(listConstant, (ct_hash, list_position)))
+        self.programInternalForm.append(PIFPair("constant", (ct_hash, list_position)))
 
         if self.currentToken() != "]":
             raise LexicalError(self.currentLine(), "List constant not closed")
@@ -290,7 +290,7 @@ class LexicalAnalyzer:
 
         if self.symbolTable.search(self.currentToken()) is None:
             st_hash, list_position = self.symbolTable.add(self.currentToken())
-            self.programInternalForm.append(PIFPair(self.currentToken(), (st_hash, list_position)))
+            self.programInternalForm.append(PIFPair("variable", (st_hash, list_position)))
         else:
             raise LexicalError(self.currentLine(), "Variable already declared")
 
@@ -316,7 +316,7 @@ class LexicalAnalyzer:
                 else:
                     ct_hash, list_position = position
 
-                self.programInternalForm.append(PIFPair(self.currentToken(), (ct_hash, list_position)))
+                self.programInternalForm.append(PIFPair("constant", (ct_hash, list_position)))
             elif constant == "list":
                 self.checkListConstant()
             else:

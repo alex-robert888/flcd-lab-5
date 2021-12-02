@@ -1,5 +1,5 @@
 from collections import defaultdict
-
+from production import Production
 
 class Grammar(object):
     def __init__(self, input_file):
@@ -37,6 +37,17 @@ class Grammar(object):
         return output
 
     def get_productions_for_non_terminal(self, non_terminal):
+        if non_terminal not in self.__non_terminals:
+            return []
+
+        output = []
+        for (left, right) in self.__productions.items():
+            if non_terminal not in left:
+                continue
+            output.append(Production(left, right))
+        return output
+
+    def get_productions_for_non_terminal_to_str(self, non_terminal):
         if non_terminal not in self.__non_terminals:
             return ""
 

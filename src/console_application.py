@@ -24,7 +24,7 @@ class ConsoleApplication(object):
         self.__parser = Parser(self.__grammar, self.__lexical_analyzer)
 
     def init_parser(self):
-        self.__lexical_analyzer.open_file("p2.txt")
+        self.__lexical_analyzer.open_file("p2-simplified.txt")
         self.__lexical_analyzer.read_tokens_input("token.in")
         self.__lexical_analyzer.close_file()
         self.__lexical_analyzer.tokenize()
@@ -49,7 +49,7 @@ class ConsoleApplication(object):
                     print(self.__grammar.get_productions())
                 elif option == 5:
                     non_terminal = input("Enter a non-terminal symbol: ")
-                    print(self.__grammar.get_productions_for_non_terminal(non_terminal))
+                    print(self.__grammar.get_productions_for_non_terminal_to_str(non_terminal))
                 elif option == 6:
                     print("Yes." if self.__grammar.is_cfg() else "No.")
                 elif option == 7:
