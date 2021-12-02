@@ -32,31 +32,27 @@ class ConsoleApplication(object):
 
     def run(self):
         while True:
-            try:
-                self.print_menu()
-                option = int(input("Enter option: "))
-                assert 0 <= option < len(self.__main_menu)
+            self.print_menu()
+            option = int(input("Enter option: "))
+            assert 0 <= option < len(self.__main_menu)
 
-                if option == 0:
-                    sys.exit()
-                elif option == 1:
-                    print(self.__grammar.get_terminals())
-                elif option == 2:
-                    print(self.__grammar.get_non_terminals())
-                elif option == 3:
-                    print(self.__grammar.get_start_symbol())
-                elif option == 4:
-                    print(self.__grammar.get_productions())
-                elif option == 5:
-                    non_terminal = input("Enter a non-terminal symbol: ")
-                    print(self.__grammar.get_productions_for_non_terminal_to_str(non_terminal))
-                elif option == 6:
-                    print("Yes." if self.__grammar.is_cfg() else "No.")
-                elif option == 7:
-                    print(self.__parser.run())
-
-            except Exception as e:
-                print(e)
+            if option == 0:
+                sys.exit()
+            elif option == 1:
+                print(self.__grammar.get_terminals())
+            elif option == 2:
+                print(self.__grammar.get_non_terminals())
+            elif option == 3:
+                print(self.__grammar.get_start_symbol())
+            elif option == 4:
+                print(self.__grammar.get_productions())
+            elif option == 5:
+                non_terminal = input("Enter a non-terminal symbol: ")
+                print(self.__grammar.get_productions_for_non_terminal_to_str(non_terminal))
+            elif option == 6:
+                print("Yes." if self.__grammar.is_cfg() else "No.")
+            elif option == 7:
+                print(self.__parser.run())
 
 
 

@@ -2,6 +2,7 @@ from parse_tree_node import ParseTreeNode
 from parsing_state import ParsingState
 from LexicalAnalyzer import LexicalAnalyzer
 from grammar import Grammar
+from production import Production
 
 
 class Parser(object):
@@ -17,10 +18,7 @@ class Parser(object):
         self.__input_stack.append(self.__grammar.get_start_symbol())
 
     def run(self):
-        print(f"input stack: {self.__input_stack}")
-        print("working stack: ")
-        for elem in self.__working_stack:
-            print(elem, end=" ")
+        self.__log()
 
         while self.__state != ParsingState.FINAL_STATE and self.__state != ParsingState.ERROR_STATE:
             if self.__state == ParsingState.NORMAL_STATE:
@@ -29,16 +27,22 @@ class Parser(object):
                 self.__handle_back_state()
             else:
                 print("Something went quite wrong.")
-            print(f"input stack: {self.__input_stack}")
-            print("working stack: ")
-            for elem in self.__working_stack:
-                if isinstance(elem, str):
-                    print(elem)
-                else:
-                    print(f"{elem[0].left_side[:]} -> {elem[0].right_side[:]}")
-            print("")
+            self.__log()
 
-
+    def __log(self):
+        print(f"============= status: {self.__state}")
+        if 0 <= self.__current_symbol_position < len(self.__pif):
+            print(f"============ PIF current symbol {self.__pif[self.__current_symbol_position].token.lower()}")
+        print(f"============ input stack: {self.__input_stack}")
+        print("============= working stack: ")
+        for elem in self.__working_stack:
+            if isinstance(elem, str):
+                print(elem)
+            else:
+                print(f"{elem[0].left_side[:]} -> {elem[0].right_side[:]}")
+        print("")
+        print("")
+        print("")
 
     def __handle_normal_state(self):
         pif_len = len(self.__pif)
@@ -54,8 +58,8 @@ class Parser(object):
                 self.__momentary_insuccess()
 
     def __handle_back_state(self):
-        working_stack_head = self.__working_stack[-1]
-        if self.__grammar.is_terminal(working_stack_head):
+        self.working_stack_head = self.__working_stack[-1]
+        if self.__grammar.is_terminal(self.working_stack_head):
             self.__back()
         else:
             self.__another_try()
@@ -65,19 +69,16 @@ class Parser(object):
 
     def __expand(self):
         input_head_stack_productions = self.__grammar.get_productions_for_non_terminal(self.input_stack_head)
-        first_production = input_head_stack_productions[0]
-        self.__working_stack.append((first_production, 1))
+        first_production = Production(input_head_stack_productions[0].left_side, input_head_stack_productions[0].right_side[0])
+        self.__working_stack.append((first_production, 0))
 
         # Remove ex-top of the input stack
         self.__input_stack.pop()
 
         # Add symbols to input stack in reversed order
-        for symbol in first_production.right_side[0][::-1]:
+        for symbol in first_production.right_side[::-1]:
             self.__input_stack.append(symbol)
 
-    # input_stack: [exit, action_list, enter]
-    # working stack: [program -> (enter, action_list, exit, 1)]
-    # pif_current_index = 1
     def __advance(self):
         self.__current_symbol_position += 1
         self.__working_stack.append(self.input_stack_head)
@@ -86,11 +87,45 @@ class Parser(object):
         self.__input_stack.pop()
 
     def __momentary_insuccess(self):
-        pass
+        self.__state = ParsingState.BACK_STATE
 
     def __back(self):
-        pass
+        self.__current_symbol_position -= 1
+        self.__input_stack.append(self.working_stack_head)
+        self.__working_stack.pop()
 
     def __another_try(self):
-        pass
+        working_stack_head_left_side = self.working_stack_head[0].left_side[0]
+        working_stack_head_productions = self.__grammar.get_productions_for_non_terminal(working_stack_head_left_side)
 
+        if self.__current_symbol_position == 0 and working_stack_head_left_side == self.__grammar.get_start_symbol():
+            self.__state = ParsingState.ERROR_STATE
+            return
+
+        current_production_index = self.working_stack_head[1] + 1
+        if current_production_index < len(working_stack_head_productions[0].right_side):
+            # Remove symbols from the input stack
+            ex_production_right_side_count = len(self.working_stack_head[0].right_side)
+            for i in range(ex_production_right_side_count):
+                self.__input_stack.pop()
+
+            # Remove production from working stack
+            self.__working_stack.pop()
+
+            # Add the next production into the working stack
+            next_production = Production((working_stack_head_left_side, ), working_stack_head_productions[0].right_side[current_production_index])
+            self.__working_stack.append((next_production, current_production_index))
+            self.__state = ParsingState.NORMAL_STATE
+
+            # Add the symbols from the right side of the next production into the input stack
+            for symbol in next_production.right_side[::-1]:
+                self.__input_stack.append(symbol)
+        else:
+            # Remove symbols from the input stack
+            ex_production_right_side_count = len(self.working_stack_head[0].right_side)
+            for i in range(ex_production_right_side_count):
+                self.__input_stack.pop()
+
+            # Remove production from working stack
+            self.__working_stack.pop()
+            self.__input_stack.append(working_stack_head_left_side)

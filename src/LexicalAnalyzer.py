@@ -7,6 +7,7 @@ PIFOutputFileName = "PIF.out"
 STOutputFileName = "ST.out"
 CTOutputFileName = "CT.out"
 
+
 class LexicalAnalyzer:
     def __init__(self):
         self.file = None
@@ -154,7 +155,7 @@ class LexicalAnalyzer:
             if self.symbolTable.search(self.currentToken()) is None:
                 raise LexicalError(self.currentLine(), "Unknown token - " + self.currentToken())
             if self.tokenIndex + 1 < len(self.tokens) and self.nextToken() in self.assignment_operators:
-                self.programInternalForm.append(PIFPair(self.currentToken(), self.symbolTable.search(self.currentToken())))
+                self.programInternalForm.append(PIFPair("variable", self.symbolTable.search(self.currentToken())))
                 self.tokenIndex += 1
                 self.checkAssignment()
             else:
@@ -320,7 +321,7 @@ class LexicalAnalyzer:
             elif constant == "list":
                 self.checkListConstant()
             else:
-                self.programInternalForm.append(PIFPair(self.currentToken(), self.symbolTable.search(self.currentToken())))
+                self.programInternalForm.append(PIFPair("variable", self.symbolTable.search(self.currentToken())))
                 if self.nextToken() == "[":
                     self.tokenIndex += 1
                     self.programInternalForm.append(PIFPair(self.currentToken(), None))

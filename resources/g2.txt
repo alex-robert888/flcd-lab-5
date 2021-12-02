@@ -1,10 +1,10 @@
-program typename action action_list action_block declaration assignment if_action condition elif_component while_action function parameter_list assignment_operator arithmetic_operator logical_operator relational_operator expression logical_expression
-ENTER EXIT BOOLEAN CHARACTER STRING INTEGER LIST IF ELSE ELIF WHILE variable constant = [ ] ( ) { } + - * / % == != <= >= < > AND OR , ;
+program typename action action_list action_block declaration assignment if_action condition elif_component while_action function parameter_list assignment_operator arithmetic_operator logical_operator relational_operator expression logical_expression simple_expression
+ENTER EXIT BOOLEAN CHARACTER STRING INTEGER LIST IF ELSE ELIF WHILE WRITE variable constant = [ ] ( ) { } + - * / % == != <= >= < > AND OR , ;
 program
 program - ENTER action_list EXIT
 action_block - { action_list }
-action_list - action
 action_list - action action_list
+action_list - action
 action - declaration ;
 action - assignment ;
 action - if_action ;
@@ -25,10 +25,12 @@ elif_component - ELIF condition action_block elif_component
 while_action - WHILE condition action_block
 function - WRITE ( parameter_list )
 assignment_operator - =
+simple_expression - constant
+simple_expression - variable
 expression - constant
 expression - variable
 expression - variable [ expression ]
-expression - expression arithmetic_operator expression
+expression - simple_expression arithmetic_operator expression
 arithmetic_operator - +
 arithmetic_operator - -
 arithmetic_operator - *
@@ -37,7 +39,7 @@ arithmetic_operator - %
 condition - ( logical_expression )
 logical_expression - expression
 logical_expression - expression relational_operator expression
-logical_expression - logical_expression logical_operator logical_expression
+logical_expression - simple_expression logical_operator logical_expression
 relational_operator - ==
 relational_operator - !=
 relational_operator - <=

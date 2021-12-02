@@ -1,6 +1,76 @@
 Token | ST/CT position
 enter - None
-boolean - None
+integer - None
 variable - (8, 0)
+; - None
+variable - (8, 0)
+= - None
+constant - (11, 0)
+; - None
+boolean - None
+variable - (3, 0)
+; - None
+variable - (3, 0)
+= - None
+constant - (11, 1)
+; - None
+integer - None
+variable - (2, 0)
+; - None
+variable - (2, 0)
+= - None
+constant - (0, 0)
+; - None
+while - None
+( - None
+variable - (2, 0)
+<= - None
+variable - (8, 0)
+/ - None
+constant - (0, 0)
+) - None
+{ - None
+if - None
+( - None
+variable - (8, 0)
+% - None
+variable - (2, 0)
+== - None
+constant - (12, 0)
+) - None
+{ - None
+variable - (3, 0)
+= - None
+constant - (4, 0)
+; - None
+} - None
+; - None
+variable - (2, 0)
+= - None
+variable - (2, 0)
++ - None
+constant - (11, 2)
+; - None
+} - None
+; - None
+if - None
+( - None
+variable - (3, 0)
+) - None
+{ - None
+write - None
+( - None
+constant - (11, 3)
+) - None
+; - None
+} - None
+else - None
+{ - None
+write - None
+( - None
+constant - (0, 1)
+) - None
+; - None
+} - None
 ; - None
 exit - None
