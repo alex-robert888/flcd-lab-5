@@ -11,6 +11,8 @@ class Parser(object):
         self.__lexical_analyzer = lexical_analyzer
         self.__pif = self.__lexical_analyzer.programInternalForm
         self.__parse_tree = list()
+        self.__parse_tree_current_index = 0
+        self.__working_stack_global_index = 0
         self.__state = ParsingState.NORMAL_STATE
         self.__current_symbol_position = 0
         self.__working_stack = list()
@@ -28,6 +30,9 @@ class Parser(object):
             else:
                 print("Something went quite wrong.")
             self.__log()
+
+        if self.__state == ParsingState.FINAL_STATE:
+            self.__build_tree()
 
     def __log(self):
         print(f"============= status: {self.__state}")
@@ -129,3 +134,44 @@ class Parser(object):
             # Remove production from working stack
             self.__working_stack.pop()
             self.__input_stack.append(working_stack_head_left_side)
+
+    def __build_tree(self):
+        # Add starting symbol
+        first_row = self.__working_stack[0]
+        self.__parse_tree.append(ParseTreeNode(0, first_row[0].left_side[0], None, None))
+        self.__working_stack_global_index += 1
+        self.__add_children(0, 0)
+        self.__print_parse_tree()
+
+    def __add_children(self, row_index, parent_index):
+        right_sibling = None
+        children_indices = []
+        for child in self.__working_stack[row_index][0].right_side:
+            next_index = len(self.__parse_tree)
+            children_indices.append(next_index)
+            self.__parse_tree.append(ParseTreeNode(next_index, child, parent_index, right_sibling))
+            right_sibling = len(self.__parse_tree) - 1
+
+        for index, child in enumerate(self.__working_stack[row_index][0].right_side):
+            if self.__grammar.is_terminal(child):
+                continue
+
+            self.__working_stack_global_index = self.__find_next_row(child)
+            if self.__working_stack_global_index is None:
+                return
+            self.__add_children(self.__working_stack_global_index, children_indices[index])
+
+    def __find_next_row(self, child):
+        next_index = self.__working_stack_global_index + 1
+        while isinstance(self.__working_stack[next_index], str):
+            if self.__working_stack_global_index == len(self.__working_stack):
+                return None
+            next_index += 1
+
+        return next_index
+
+    def __print_parse_tree(self):
+        f = open("output/parse-tree.out", "w")
+
+        for row in self.__parse_tree:
+            f.write(f"{str(row)}\n")
