@@ -170,7 +170,7 @@ class Parser(object):
         return next_index
 
     def __print_parse_tree(self):
-        f = open("output/parse-tree.out", "w")
+        f = open("output/parse-tree-g1.out", "w")
 
         for row in self.__parse_tree:
             f.write(f"{str(row)}\n")
