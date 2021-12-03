@@ -468,8 +468,9 @@ class Token:
     def __str__(self):
         return str(self._line) + " " + self._value
 
+
 class PIFPair:
-    def __init__(self, token, tablePosition):
+    def __init__(self, token, tablePosition=None):
         self._token = token
         self._tablePosition = tablePosition
 

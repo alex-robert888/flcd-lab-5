@@ -1,11 +1,11 @@
 import sys
 from grammar import Grammar
-from LexicalAnalyzer import LexicalAnalyzer
+from LexicalAnalyzer import LexicalAnalyzer, PIFPair
 from parser import Parser
 
 
 class ConsoleApplication(object):
-    def __init__(self, input_file):
+    def __init__(self, grammar_input_file, pif_input_file=None):
         self.__main_menu = [
             "0. Exit.",
             "1. Print terminal symbols.",
@@ -16,12 +16,17 @@ class ConsoleApplication(object):
             "6. CFG check",
             "7. Parse program"
         ]
-        self.__grammar = Grammar(input_file)
+        self.__grammar = Grammar(grammar_input_file)
 
-        self.__lexical_analyzer = LexicalAnalyzer()
-        self.init_parser()
+        pif = None
+        if pif_input_file is None:
+            self.__lexical_analyzer = LexicalAnalyzer()
+            self.init_parser()
+            pif = self.__lexical_analyzer.programInternalForm
+        else:
+            pif = self.__load_pif_from_file(pif_input_file)
 
-        self.__parser = Parser(self.__grammar, self.__lexical_analyzer)
+        self.__parser = Parser(self.__grammar, pif)
 
     def init_parser(self):
         self.__lexical_analyzer.open_file("p2-simplified.txt")
@@ -29,6 +34,15 @@ class ConsoleApplication(object):
         self.__lexical_analyzer.close_file()
         self.__lexical_analyzer.tokenize()
         self.__lexical_analyzer.analyze()
+
+    def __load_pif_from_file(self, pif_input_file):
+        f = open(pif_input_file, "r")
+        pif = []
+        f.readline()
+        while line := f.readline():
+            symbol = line.split()[0]
+            pif.append(PIFPair(symbol))
+        return pif
 
     def run(self):
         while True:
@@ -53,8 +67,6 @@ class ConsoleApplication(object):
                 print("Yes." if self.__grammar.is_cfg() else "No.")
             elif option == 7:
                 print(self.__parser.run())
-
-
 
     def print_menu(self):
         for item in self.__main_menu:

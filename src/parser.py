@@ -1,15 +1,14 @@
 from parse_tree_node import ParseTreeNode
 from parsing_state import ParsingState
-from LexicalAnalyzer import LexicalAnalyzer
+from LexicalAnalyzer import PIFPair
 from grammar import Grammar
 from production import Production
 
 
 class Parser(object):
-    def __init__(self, grammar: Grammar, lexical_analyzer: LexicalAnalyzer):
+    def __init__(self, grammar: Grammar, pif: [PIFPair]):
         self.__grammar = grammar
-        self.__lexical_analyzer = lexical_analyzer
-        self.__pif = self.__lexical_analyzer.programInternalForm
+        self.__pif = pif
         self.__parse_tree = list()
         self.__parse_tree_current_index = 0
         self.__working_stack_global_index = 0
