@@ -99,3 +99,8 @@ The format of the input file is the following:
 ## Documented Tests
 
 https://docs.google.com/document/d/1oU9ng29mMsg5npG1JqTqawmowtTcaUoNPld3HyvkwxE/edit?usp=sharing
+
+## Class Diagram
+
+![ClassDiagram](https://user-images.githubusercontent.com/52594991/144623950-114dc68d-37cd-40b7-8c87-179daf652bb5.jpeg)
+
